@@ -129,6 +129,9 @@ router.get('/', async (req, res) => {
     if (active === 'true') {
         query += ' WHERE is_active = true';
     }
+    if(active === 'false'){
+        query += ' WHERE is_active = false'
+    }
     const result = await db.query(query);
     res.json(result.rows);
 })

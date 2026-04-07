@@ -19,17 +19,17 @@ const router=express.Router()
  *       200:
  *         description: Attendance summary list
  */
-router.get('/summary',async(req,res)=>{
-    const result=await db.query(`
+router.get('/summary', async (req, res) => {
+    const result = await db.query(`
         SELECT 
-        employee_id,
+        e.employee_name,
+        a.employee_id,
         SUM(CASE WHEN is_full_day THEN 1 ELSE 0.5 END) as total_days
-    FROM attendance
-    GROUP BY employee_id
-        
-        `);
-        res.json(result.rows);
-
+        FROM attendance a
+        JOIN employee e ON a.employee_id = e.employee_id
+        GROUP BY a.employee_id, e.employee_name
+    `);
+    res.json(result.rows);
 })
 
 // taking attendace
