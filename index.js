@@ -14,6 +14,7 @@ app.use(express.json());
 app.use('/api/employees', employeeRoutes);
 app.use('/api/attendance', attendanceRoutes);
 
+//swagger tesing
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.listen(port,()=>{
