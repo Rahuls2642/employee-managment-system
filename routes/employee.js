@@ -3,11 +3,12 @@ import { createEmployee } from "../controller/employee.controller.js";
 import { editEmployee } from "../controller/employee.controller.js";
 import { listEmployee } from "../controller/employee.controller.js";
 import { employeeDeatils } from "../controller/employee.controller.js";
+import verifyToken from "../middleware/auth.js";
 
 
 const router=express.Router();
 
-//Crrate employee
+
 /**
  * @swagger
  * tags:
@@ -44,7 +45,7 @@ const router=express.Router();
  *       200:
  *         description: Employee created successfully
  */
-router.post("/",createEmployee)
+router.post("/",verifyToken,createEmployee)
 
 //Edit employess
 /**
@@ -84,10 +85,10 @@ router.post("/",createEmployee)
  *       200:
  *         description: Employee updated successfully
  */
-router.put('/:id',editEmployee)
+router.put('/:id',verifyToken,editEmployee)
 
 
-//List employees
+
 /**
  * @swagger
  * /api/employees:
@@ -105,15 +106,17 @@ router.put('/:id',editEmployee)
  *       200:
  *         description: List of employees
  */
-router.get('/',listEmployee)
+router.get('/',verifyToken,listEmployee)
 
-//employee detail by id
+
 /**
  * @swagger
  * /api/employees/{id}:
  *   get:
  *     summary: Get employee by ID
  *     tags: [Employee]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -123,7 +126,9 @@ router.get('/',listEmployee)
  *     responses:
  *       200:
  *         description: Employee details
+ *       401:
+ *         description: Unauthorized
  */
-router.get('/:id',employeeDeatils)
+router.get('/:id',verifyToken,employeeDeatils)
 
 export default router;

@@ -2,6 +2,7 @@ import express from 'express';
 import { attendaceSummary } from '../controller/attendance.controller.js';
 import { attendace } from '../controller/attendance.controller.js';
 import { attendaceList } from '../controller/attendance.controller.js';
+import verifyToken from '../middleware/auth.js';
 const router=express.Router()
 /**
  * @swagger
@@ -42,7 +43,7 @@ const router=express.Router()
  *                     type: number
  *                     example: 2.5
  */
-router.get('/summary',attendaceSummary)
+router.get('/summary',verifyToken,attendaceSummary)
 
 // taking attendace
 /**
@@ -73,7 +74,7 @@ router.get('/summary',attendaceSummary)
  *       200:
  *         description: Attendance marked successfully
  */
-router.post('/',attendace)
+router.post('/',verifyToken,attendace)
 
 //attendace list with filter feature
 /**
@@ -100,7 +101,7 @@ router.post('/',attendace)
  *       200:
  *         description: Attendance list with employee details
  */
-router.get('/',attendaceList)
+router.get('/',verifyToken,attendaceList)
 
 
 
