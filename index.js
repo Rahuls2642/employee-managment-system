@@ -4,6 +4,7 @@ import employeeRoutes from "./routes/employee.js"
 import attendanceRoutes from "./routes/attendance.js"
 import swaggerUi from "swagger-ui-express"
 import swaggerSpec from "./swagger.js";
+import authRoutes from "./routes/auth.js"
 
 const app=express();
 const port=3000;
@@ -11,6 +12,7 @@ app.use(cors());
 app.use(express.json());
 
 //API
+app.use('/api/auth',authRoutes)
 app.use('/api/employees', employeeRoutes);
 app.use('/api/attendance', attendanceRoutes);
 
