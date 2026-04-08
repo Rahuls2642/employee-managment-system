@@ -18,3 +18,11 @@ CREATE TABLE IF NOT EXISTS attendance (
     employee_id INT REFERENCES employee(employee_id) ON DELETE CASCADE,
     is_full_day BOOLEAN
 );
+
+CREATE TABLE IF NOT EXISTS users (
+    user_id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    mobile_no VARCHAR(20) UNIQUE NOT NULL,
+    password VARCHAR(100) NOT NULL,
+    created_date TIMESTAMP DEFAULT NOW()
+);
