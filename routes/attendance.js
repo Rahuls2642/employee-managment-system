@@ -25,6 +25,13 @@ const router=express.Router()
  *           type: integer
  *         required: false
  *         description: Filter by specific employee ID
+ *       - in: query
+ *         name: month
+ *         schema:
+ *           type: integer
+ *           example: 4
+ *         required: false
+ *         description: Filter by month (1-12)
  *     responses:
  *       200:
  *         description: Attendance summary list
