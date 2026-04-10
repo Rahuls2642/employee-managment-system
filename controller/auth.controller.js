@@ -66,7 +66,7 @@ export const loginUser = async (req, res) => {
       SECRET_KEY,
       { expiresIn: "1d" },
     );
-    res.json({ message: "Login succesfull", token });
+    res.json({ message: "Login succesfull", token , name:user.name });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
