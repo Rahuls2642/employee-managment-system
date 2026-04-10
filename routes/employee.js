@@ -3,6 +3,7 @@ import { createEmployee } from "../controller/employee.controller.js";
 import { editEmployee } from "../controller/employee.controller.js";
 import { listEmployee } from "../controller/employee.controller.js";
 import { employeeDeatils } from "../controller/employee.controller.js";
+import { deleteEmployee } from "../controller/employee.controller.js";
 import verifyToken from "../middleware/auth.js";
 
 
@@ -130,5 +131,28 @@ router.get('/',verifyToken,listEmployee)
  *         description: Unauthorized
  */
 router.get('/:id',verifyToken,employeeDeatils)
+
+/**
+ * @swagger
+ * /api/employees/{id}:
+ *   get:
+ *     summary: Delete employee by ID
+ *     tags: [Employee]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Deleted employee
+ *       401:
+ *         description: Unauthorized
+ */
+
+router.delete('/:id',verifyToken,deleteEmployee)
 
 export default router;
