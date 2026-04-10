@@ -1,7 +1,8 @@
 import express from 'express';
-import { attendaceSummary } from '../controller/attendance.controller.js';
+import { attendaceSummary, getReport } from '../controller/attendance.controller.js';
 import { attendace } from '../controller/attendance.controller.js';
 import { attendaceList } from '../controller/attendance.controller.js';
+import { getDashboard } from '../controller/attendance.controller.js';
 import verifyToken from '../middleware/auth.js';
 const router=express.Router()
 /**
@@ -52,6 +53,78 @@ const router=express.Router()
  */
 router.get('/summary',verifyToken,attendaceSummary)
 
+/**
+ * @swagger
+ * /api/attendance/dashboard:
+ *   get:
+ *     summary: Get dashboard data
+ *     tags: [Attendance]
+ *     responses:
+ *       200:
+ *         description: Dashboard summary
+ */
+
+
+router.get('/dashboard',verifyToken, getDashboard);
+
+/**
+ * @swagger
+ * /api/attendance/report:
+ *   get:
+ *     summary: Get attendance report with date range
+ *     tags: [Attendance]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: start_date
+ *         schema:
+ *           type: string
+ *           format: date
+ *         required: true
+ *         example: 2026-04-01
+ *         description: Start date (YYYY-MM-DD)
+ *       - in: query
+ *         name: end_date
+ *         schema:
+ *           type: string
+ *           format: date
+ *         required: true
+ *         example: 2026-04-30
+ *         description: End date (YYYY-MM-DD)
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *           default: 1
+ *         description: Page number
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *           default: 5
+ *         description: Records per page
+ *     responses:
+ *       200:
+ *         description: Report data fetched successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   attendance_date:
+ *                     type: string
+ *                     format: date
+ *                   total_present:
+ *                     type: number
+ *       400:
+ *         description: Missing required parameters
+ *       401:
+ *         description: Unauthorized
+ */
+router.get('/report', verifyToken, getReport)
 // taking attendace
 /**
  * @swagger
@@ -109,7 +182,6 @@ router.post('/',verifyToken,attendace)
  *         description: Attendance list with employee details
  */
 router.get('/',verifyToken,attendaceList)
-
 
 
 export default router;
