@@ -24,20 +24,53 @@ export const editEmployee=async(req,res)=>{
 
   res.json(result.rows[0]);
 }
+export const deleteEmployee=async(req,res)=>{
+  try {
+    await db.query(
+      'DELETE FROM employee WHERE employee_id = $1',
+      [req.params.id]
+    );
 
-export const listEmployee=async(req,res)=>{
-     const { active } = req.query;
-    let query = `SELECT * FROM employee`;
-    if (active === 'true') {
-        query += ' WHERE is_active = true';
-    }
-    if(active === 'false'){
-        query += ' WHERE is_active = false'
-    }
-    const result = await db.query(query);
-    res.json(result.rows);
+    res.json({ message: "Employee deleted successfully" });
+
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 }
 
+export const listEmployee = async (req, res) => {
+  try {
+    const { active, page = 1, limit = 5 } = req.query;
+
+    const pageNum = parseInt(page);
+    const limitNum = parseInt(limit);
+    const offset = (pageNum - 1) * limitNum;
+
+    let query = `SELECT * FROM employee`;
+    let conditions = [];
+    let values = [];
+
+    if (active === 'true') {
+      conditions.push(`is_active = true`);
+    } else if (active === 'false') {
+      conditions.push(`is_active = false`);
+    }
+
+    if (conditions.length > 0) {
+      query += ` WHERE ` + conditions.join(' AND ');
+    }
+
+    query += ` ORDER BY employee_id LIMIT $1 OFFSET $2`;
+    values.push(limitNum, offset);
+
+    const result = await db.query(query, values);
+
+    res.json(result.rows);
+
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
 export const employeeDeatils=async(req,res)=>{
       const result=await db.query(
     `SELECT * FROM employee WHERE employee_id=$1`,
