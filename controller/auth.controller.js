@@ -12,7 +12,7 @@ export const registerUser = async (req, res) => {
 
   try {
     const { name, mobile_no, password } = req.body;
-    if(!name,!mobile_no,!password){
+    if(!name ||!mobile_no ||!password){
         return res.status(400).res.json({error:"Plesse enter all the fields"})
     }
 

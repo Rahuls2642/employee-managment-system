@@ -86,3 +86,17 @@ You can test all APIs directly from the Swagger UI.
 Rahul Singh
 Software Development Intern
 Knowforth Tech LLP
+
+## Frontend Setup
+Navigate to frontend folder:
+cd FRONTEND
+
+## Install dependencies:
+npm install
+
+## Start frontend:
+npm run dev
+
+Frontend will run on:
+
+http://localhost:5173

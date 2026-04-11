@@ -40,7 +40,7 @@ export const deleteEmployee=async(req,res)=>{
 
 export const listEmployee = async (req, res) => {
   try {
-    const { active, page = 1, limit = 5 } = req.query;
+    const { active, page = 1, limit = 3 } = req.query;
 
     const pageNum = parseInt(page);
     const limitNum = parseInt(limit);

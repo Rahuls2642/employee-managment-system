@@ -2,25 +2,31 @@ import db from "../db.js";
 
 //Attendance summarey logic
 export const attendaceSummary = async (req, res) => {
-  const { employee_id,month } = req.query;
-  let query = ` SELECT e.employee_name,a.employee_id,
-SUM(CASE WHEN is_full_day THEN 1 ELSE 0.5 END) as total_days
-FROM attendance a
-JOIN employee e ON a.employee_id=e.employee_id
-GROUP BY a.employee_id, e.employee_name`;
+  const { employee_id, month } = req.query;
+  
+  let query = `
+    SELECT e.employee_name, a.employee_id,
+    SUM(CASE WHEN is_full_day THEN 1 ELSE 0.5 END) as total_days
+    FROM attendance a
+    JOIN employee e ON a.employee_id = e.employee_id
+    WHERE 1=1
+  `;
 
   const value = [];
+
   if (employee_id) {
-    value.push(employee_id);
-    query += ` HAVING a.employee_id = $${value.length}`;
+    value.push(parseInt(employee_id));
+    query += ` AND a.employee_id = $${value.length}`;
   }
+
   if (month) {
     value.push(parseInt(month));
     query += ` AND EXTRACT(MONTH FROM a.attendance_date) = $${value.length}`;
   }
 
-  const result = await db.query(query, value);
+  query += ` GROUP BY a.employee_id, e.employee_name`;
 
+  const result = await db.query(query, value);
   res.json(result.rows);
 };
 
